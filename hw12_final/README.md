@@ -77,3 +77,48 @@
 - Патерни проектування
 - JSON для зберігання даних
 - CSS для стилізації
+
+---
+
+# HW12 Final — Resume Generator from JSON Description
+
+## Assignment description
+
+Implement a resume generator that demonstrates the application of five design patterns: **Facade, Template Method, Factory Method, Composite, Decorator**.
+
+The application generates a self-contained HTML resume page built from a single data source — `resume.json`. All styles are fixed in `styles.css`; no external libraries or frameworks are used. After compiling `main.ts` and opening `index.html`, the page must display the complete resume without errors, and projects with `"isRecent": true` must be highlighted in red.
+
+## Project structure
+
+```
+/
+├── index.html          # Static page layout
+├── resume.json         # Data source
+├── vite.config.js
+├── tsconfig.json
+└── src/
+    ├── styles.css
+    ├── facade/         # ResumePage — project facade
+    ├── importer/       # AbstractImporter (Template Method), ResumeImporter
+    ├── blocks/         # Block classes + BlockFactory (Factory Method), ExperienceBlock (Composite)
+    ├── decorators/     # HighlightDecorator
+    ├── models/         # ResumeModel types
+    └── main.ts
+```
+
+## How to run
+
+```bash
+npm install
+npm run dev      # Development mode
+npm run build    # Production build
+npm run preview  # Preview the build
+```
+
+## Technologies
+
+- TypeScript
+- Vite (build & development)
+- Design patterns: Facade, Template Method, Factory Method, Composite, Decorator
+- JSON for data storage
+- CSS for styling

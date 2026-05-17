@@ -103,3 +103,34 @@ npm start ./path/to/directory csv
 - Кількість директорій
 - Загальний розмір файлів
 - Статистику по розширеннях файлів
+
+---
+
+# HW05 — Structural Patterns: Adapter & Facade
+
+## Assignment description
+
+The goal is to master structural patterns in a real-world context:
+
+- **Facade** — to simplify a complex analysis and report-building process.
+- **Adapter** — to unify report output formats.
+
+Implement a CLI utility for file system analysis that performs a full directory scan, generates a report, and saves it in `JSON`, `CSV`, or `XML` format using two hierarchical facades and the Adapter pattern.
+
+## Architecture
+
+- **`ReportManager`** — high-level facade managing the full lifecycle.
+- **`AnalyzerFacade`** — low-level facade coordinating analysis and formatting.
+- **Adapter** (`JsonReportAdapter`, `XmlReportAdapter`, `CsvReportAdapter`) — pluggable output formats without changing application logic.
+
+## How to run
+
+```bash
+npm install
+npm start                              # Analyse current directory, JSON output
+npm start ./path/to/directory json
+npm start ./path/to/directory xml
+npm start ./path/to/directory csv
+```
+
+Reports are saved to the `reports/` directory with timestamped filenames.

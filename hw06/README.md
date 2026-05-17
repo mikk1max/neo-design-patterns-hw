@@ -60,3 +60,34 @@ npm start
    - Перехоплює виклики методів об'єкта
    - Реалізує захист від спаму через обмеження частоти
    - Забезпечує прозорий доступ до оригінального об'єкта
+
+---
+
+# HW06 — Structural Patterns: Decorator & Proxy
+
+## Assignment description
+
+The goal is to learn how to combine two structural patterns in a simplified messaging service model:
+
+- **Decorator** — extends the service's functionality without modifying its code.
+- **Proxy** — limits the rate of calls to the service, simulating rate-limit behaviour found in real APIs.
+
+Implement a CLI utility that provides a `send(message: string): void` interface, sends messages through a base service, wraps it in decorators that transform the message text, and applies a Proxy that blocks messages sent too frequently.
+
+## How to run
+
+```bash
+npm install
+npm start
+```
+
+## Expected output
+
+```
+Testing the anti-spam system:
+[2024-02-20 15:30:00] HELLO! HOW ARE YOU?
+[RateLimit] skipped
+
+After waiting 1 second:
+[2024-02-20 15:30:01] THIS MESSAGE WILL GO THROUGH BECAUSE WE WAITED
+```

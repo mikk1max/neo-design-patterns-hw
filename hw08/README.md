@@ -66,3 +66,27 @@ npx ts-node src/main.ts markdown
 [Summary] Rendered 2 sections, 3 paragraphs, 2 lists
 [Performance] Total render time: 12ms
 ```
+
+---
+
+# HW08 — Behavioural Pattern: Observer
+
+## Assignment description
+
+Add a reactive layer to the document generator from the previous assignment (HW07) that tracks the rendering process of individual document elements. During generation, each element — `Paragraph`, `List`, `Section` — must notify subscribers when it finishes rendering. Reactions to these events are implemented through a subscription mechanism — the **Observer** pattern.
+
+- **`RenderEventPublisher`** — a static class that manages subscribers and dispatches render events.
+- **`RenderEventSubscriber`** — subscriber interface with an `update(context: RenderContext)` method.
+- **`RenderContext`** — event object containing element type, content, level, item count, and render time.
+
+## Subscribers
+
+- `RenderLoggerSubscriber` — logs each render event.
+- `SummaryCollector` — counts rendered elements by type.
+- `PerformanceSubscriber` — tracks total render time.
+
+## How to run
+
+```bash
+npx ts-node src/main.ts markdown
+```

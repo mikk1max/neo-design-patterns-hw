@@ -163,3 +163,29 @@ npx ts-node ./src/main.ts
 --- Після redo видалення задачі ---
 []
 ```
+
+---
+
+# HW10 — Behavioural Pattern: Command
+
+## Assignment description
+
+Implement a simple but functional TODO application using the **Command** pattern. Each action on tasks (add, update, delete, complete) is encapsulated as a command object. All commands are executed through a single `CommandHistory` dispatcher that supports `undo` and `redo`.
+
+## Project structure
+
+```
+src/
+├── commands/   # Command interface, AbstractCommand, Add/Remove/Update/CompleteTaskCommand, CommandHistory
+├── models/     # Task, TaskList
+├── services/   # TaskManager
+└── main.ts
+```
+
+## How to run
+
+```bash
+npx ts-node ./src/main.ts
+```
+
+The application sequentially adds, updates, completes, and deletes a task, then performs a full undo sequence followed by a full redo sequence, printing the task list after each operation.

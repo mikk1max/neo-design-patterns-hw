@@ -88,3 +88,42 @@ npx ts-node src/main.ts apple
 1. Створює відповідну фабрику провайдера
 2. Ініціалізує контекст платежів
 3. Виконує повний цикл операцій (authorize, capture, refund)
+
+---
+
+# HW03 — Creational Patterns: Factory Method & Abstract Factory
+
+In real applications, working with payment systems is always about changeability, dependencies, and scalability. In this assignment you will learn to separate object creation from object use with the **Factory Method and Abstract Factory** patterns, enabling flexible, modular, and extensible systems.
+
+## Assignment description
+
+Implement a simulated payment system architecture supporting three providers: `Stripe`, `PayPal`, and `ApplePay`. Each provider implements the same operations: `authorize → capture → refund`. Provider implementations are simulations using `console.log` — no real SDKs are used.
+
+## Project structure
+
+```
+/src
+  /core
+    PaymentProvider.ts        # Payment provider interface
+    PaymentProviderFactory.ts # Provider factory interface
+  /providers
+    /stripe  /paypal  /apple  # Concrete providers and their factories
+  /app
+    PaymentContext.ts         # Context for working with providers
+  main.ts
+```
+
+## Expected result
+
+- All `XxxPaymentProvider` classes implement `PaymentProvider`.
+- All `XxxFactory` classes implement `PaymentProviderFactory`.
+- `PaymentContext` works with any factory through the interface.
+- `main.ts` demonstrates a full payment cycle with the selected provider.
+
+## How to run
+
+```bash
+npx ts-node src/main.ts stripe   # Run with Stripe
+npx ts-node src/main.ts paypal   # Run with PayPal
+npx ts-node src/main.ts apple    # Run with Apple Pay
+```

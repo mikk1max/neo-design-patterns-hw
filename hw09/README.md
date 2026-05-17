@@ -149,3 +149,35 @@ id,name,email,phone
 ```
 
 Для всіх трьох форматів CSV, JSON, XML обхід повинен працювати однаково — по одному користувачу за ітерацію.
+
+---
+
+# HW09 — Behavioural Patterns: Iterator & Template Method
+
+## Assignment description
+
+### Template Method
+
+Implement user statistics export using the **Template Method** pattern. Extract the common export algorithm into a base class, leaving formatting details to concrete subclasses. User data is fetched from `https://jsonplaceholder.typicode.com/users`. Supported export formats: CSV, JSON, XML.
+
+### Iterator
+
+After implementing the exporters, create separate iterators for traversing data stored in those files. Iterators must provide sequential access to elements, encapsulating all file reading and parsing logic.
+
+## Project structure
+
+```
+src/
+├── exporters/   # DataExporter (template), CsvExporter, JsonExporter, XmlExporter
+├── iterators/   # CsvIterator, JsonIterator, XmlIterator
+├── data/        # UserData type
+├── main.ts      # Export demo
+└── main-iterate.ts  # Iterator demo
+```
+
+## How to run
+
+```bash
+npx ts-node ./src/main.ts          # Export users to CSV, JSON, XML
+npx ts-node ./src/main-iterate.ts  # Iterate over exported files
+```
