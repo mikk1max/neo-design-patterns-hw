@@ -1,63 +1,69 @@
-# Домашні завдання до курсу "Design Patterns"
+# Домашнє завдання до Теми Основи об’єктно-орієнтованого програмування
 
-Цей репозиторій містить набір домашніх завдань для курсу "Design Patterns". Кожна папка або файл — це стартова реалізація певного патерну або їх комбінації, яку студент має довести до логічного завершення.
+У цьому завданні ви моделюєте невелику систему, схожу на ті, з якими стикаються розробники в реальних проєктах. Завдяки цьому попрактикуєтесь у застосуванні ключових принципів ООП — інкапсуляції, композиції, наслідування і поліморфізму — у зв’язному, життєвому контексті.
 
-## Як працювати з цим репозиторієм
+## Опис завдання
 
-- Для кожного завдання надано початковий код із заглушками, підказками та базовою структурою.
-- Ваше завдання — реалізувати відсутню логіку, дотримуючись принципів відповідного патерну проектування.
-- Уважно читайте TODO-коментарі та підказки у файлах — вони вказують, що саме потрібно доробити.
-- Деякі завдання містять мінімальну реалізацію, яку треба розширити, перевірити або оптимізувати.
+Вам потрібно реалізувати модель бібліотеки з підтримкою об'єктів: книги, автори, фізичні примірники, читачі, бібліотека як агрегатор. Основна мета — реалізувати предметну область з використанням ключових понять ООП у TypeScript.
 
-## Структура
+## Очікувана функціональність
 
-- Кожна папка або файл відповідає окремому завданню або частині великого завдання (наприклад, фінального проєкту).
-- Для фінального проєкту є окремий README з детальним описом вимог, структури та інструкцій по запуску у папці hw12_final.
+### Основні класи:
 
-## Рекомендації
-
-- Дотримуйтесь принципів SOLID та best practices для обраного патерну.
-- Не бійтеся рефакторити стартовий код, якщо це потрібно для кращої відповідності патерну.
-- Пояснюйте свої рішення у коментарях, якщо реалізація нетривіальна.
-
-## Як здавати
-
-- Завершене завдання має містити робочий код без помилок компіляції/запуску.
-- Оформіть та надайте посилання на свій репозиторій згідно з інструкціями LMS.
+- **`Author`** зберігає ім’я та список написаних книг.
+- **`Book`** реалізує `AbstractBook`, містить назву, рік, автора.
+- **`EBook`** реалізує `AbstractBook`, додає поле `url`.
+- **`Copy`** містить посилання на книгу та прапорець `isAvailable`.
+- **`Reader`** має унікальний `id`, ім’я та список позичених копій.
+- **`Library`** надає методи для:
+  - додавання книг, авторів, копій, читачів
+  - отримання вільних копій
+  - пошуку книг за автором
+- **`BorrowService`** окремий сервіс для позичання книги читачу `borrow(reader: Reader, copy: Copy)`.
 
 ---
 
-Успіхів у вивченні патернів проектування! Якщо виникають питання — звертайтесь до ментора або обговорюйте у чаті курсу.
+# HW01 — OOP Fundamentals
 
----
+In this assignment you model a small system similar to those developers encounter in real projects. It gives you practice applying key OOP principles — encapsulation, composition, inheritance, and polymorphism — in a coherent, real-world context.
 
-# Design Patterns Course — Homework
+## Assignment description
 
-This repository contains homework assignments for the "Design Patterns" course. Each folder or file is a starter implementation of a specific pattern or combination of patterns that students are expected to complete.
+You need to implement a library model supporting the following objects: books, authors, physical copies, readers, and the library itself as an aggregator. The primary goal is to model the domain using key OOP concepts in TypeScript.
 
-## How to work with this repository
+## Expected functionality
 
-- Each assignment provides starter code with stubs, hints, and a base structure.
-- Your task is to implement the missing logic following the principles of the relevant design pattern.
-- Read the TODO comments and hints in the files carefully — they indicate exactly what needs to be done.
-- Some assignments contain a minimal implementation that needs to be extended, verified, or optimised.
+### Core classes:
 
-## Structure
+- **`Author`** stores a name and a list of authored books.
+- **`Book`** extends `AbstractBook`, contains a title, year, and author.
+- **`EBook`** extends `AbstractBook`, adds a `url` field.
+- **`Copy`** holds a reference to a book and an `isAvailable` flag.
+- **`Reader`** has a unique `id`, a name, and a list of borrowed copies.
+- **`Library`** provides methods for:
+  - adding books, authors, copies, and readers
+  - retrieving available copies
+  - searching books by author
+- **`BorrowService`** — a separate service for lending a book to a reader: `borrow(reader: Reader, copy: Copy)`.
 
-- Each folder or file corresponds to a separate assignment or part of a larger task (e.g. the final project).
-- The final project has its own README with a detailed description of requirements, structure, and run instructions inside the `hw12_final` folder.
+## How to run
 
-## Recommendations
+```bash
+npm install
+npx ts-node src/main.ts
+```
 
-- Follow SOLID principles and best practices for the chosen pattern.
-- Feel free to refactor the starter code if it helps better align with the pattern.
-- Explain your decisions in comments when the implementation is non-trivial.
+## Expected output
 
-## How to submit
+```
+Attempting to borrow copy1...
+Borrow result: true
+Attempting to borrow copy1 again...
+Borrow result: false
+Attempting to return copy1...
+Copy1 is available: true
 
-- The completed assignment must contain working code with no compilation or runtime errors.
-- Format and provide a link to your repository according to the LMS instructions.
-
----
-
-Good luck learning design patterns! If you have questions — reach out to your mentor or discuss in the course chat.
+Book descriptions:
+Physical book "The Great Book" by John Doe (2020)
+E-book "Digital Book" by John Doe (2021) - Available at: https://example.com/ebook
+```
