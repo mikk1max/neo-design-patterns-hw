@@ -51,3 +51,33 @@
 ```
 
 Вхідні дані — файл `records.json` містить масив записів.
+
+---
+
+# HW11 — Behavioural Patterns: Chain of Responsibility & Mediator
+
+## Assignment description
+
+Implement a data-processing system that reads an array of JSON records, validates and transforms them through a chain of handlers, and saves the results to the appropriate files. In case of an error, the record is written to a `rejected.jsonl` file.
+
+- **Chain of Responsibility** — separate chains handle each record type: `access_log`, `transaction`, `system_error`.
+- **Mediator** — centralises saving and routing of results (both successful and rejected records).
+
+## Project structure
+
+```
+chain/       # AbstractHandler, handlers (validators/parsers), chains per type
+mediator/    # ProcessingMediator, writers (AccessLogWriter, TransactionWriter, etc.)
+data/        # records.json — input file
+models/      # DataRecord
+output/      # Generated output files
+main.ts
+```
+
+## How to run
+
+```bash
+npx ts-node main.ts
+```
+
+Output files are saved to the `output/` directory (`.json`, `.csv`, `.jsonl` formats).

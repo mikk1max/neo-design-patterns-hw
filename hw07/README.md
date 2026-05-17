@@ -87,3 +87,39 @@ npm start -- plain output.txt     # Зберегти як текст
 2. Успадкуйте його від `BaseRenderer`
 3. Реалізуйте необхідні методи
 4. Додайте новий формат у `RendererFactory`
+
+---
+
+# HW07 — Structural Patterns: Composite & Bridge
+
+## Assignment description
+
+Implement a document generation system that allows creating a document from several nested blocks: paragraphs, lists, and sections. Documents must be saved and rendered in different formats: Markdown, HTML, and plain text.
+
+- **Composite** — implemented in the `Section` class, which allows building a tree hierarchy of `DocNode` elements.
+- **Bridge** — implemented through the `DocRenderer` interface, which can be swapped into any element to change the output format.
+
+## Project structure
+
+```
+src/
+├── interfaces/   # DocNode and DocRenderer interfaces
+├── renderers/    # HTMLRenderer, MarkdownRenderer, PlainTextRenderer
+├── nodes/        # Paragraph, List, Section (Composite)
+├── factories/    # RendererFactory
+└── main.ts
+```
+
+## How to run
+
+```bash
+npm install
+npm start -- markdown          # Markdown output
+npm start -- plain             # Plain text output
+npm start -- html              # HTML output
+npm start -- html output.html  # Save to file
+```
+
+## Extending
+
+To add a new output format: create a new renderer in `src/renderers/`, extend `BaseRenderer`, implement the required methods, and register it in `RendererFactory`.

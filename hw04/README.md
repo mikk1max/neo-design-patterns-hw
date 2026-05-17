@@ -50,3 +50,28 @@ npm run singleton
 ```bash
 npm run dev
 ```
+
+---
+
+# HW04 — Creational Patterns: Singleton, Builder & Prototype
+
+This assignment covers three separate examples of creational patterns: Singleton, Builder, and Prototype. Each example is presented as a realistic task in a TypeScript context. Your job is to analyse the starter code and apply the appropriate pattern by rewriting the implementation.
+
+## Project structure
+
+```
+src/
+├── builder/    # Builder pattern implementation
+├── prototype/  # Prototype pattern implementation
+└── singleton/  # Singleton pattern implementation
+```
+
+## How to run
+
+```bash
+npm install
+npm run builder    # Builder example
+npm run prototype  # Prototype example
+npm run singleton  # Singleton example
+npm run dev        # Watch mode
+```

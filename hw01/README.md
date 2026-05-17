@@ -20,3 +20,50 @@
   - отримання вільних копій
   - пошуку книг за автором
 - **`BorrowService`** окремий сервіс для позичання книги читачу `borrow(reader: Reader, copy: Copy)`.
+
+---
+
+# HW01 — OOP Fundamentals
+
+In this assignment you model a small system similar to those developers encounter in real projects. It gives you practice applying key OOP principles — encapsulation, composition, inheritance, and polymorphism — in a coherent, real-world context.
+
+## Assignment description
+
+You need to implement a library model supporting the following objects: books, authors, physical copies, readers, and the library itself as an aggregator. The primary goal is to model the domain using key OOP concepts in TypeScript.
+
+## Expected functionality
+
+### Core classes:
+
+- **`Author`** stores a name and a list of authored books.
+- **`Book`** extends `AbstractBook`, contains a title, year, and author.
+- **`EBook`** extends `AbstractBook`, adds a `url` field.
+- **`Copy`** holds a reference to a book and an `isAvailable` flag.
+- **`Reader`** has a unique `id`, a name, and a list of borrowed copies.
+- **`Library`** provides methods for:
+  - adding books, authors, copies, and readers
+  - retrieving available copies
+  - searching books by author
+- **`BorrowService`** — a separate service for lending a book to a reader: `borrow(reader: Reader, copy: Copy)`.
+
+## How to run
+
+```bash
+npm install
+npx ts-node src/main.ts
+```
+
+## Expected output
+
+```
+Attempting to borrow copy1...
+Borrow result: true
+Attempting to borrow copy1 again...
+Borrow result: false
+Attempting to return copy1...
+Copy1 is available: true
+
+Book descriptions:
+Physical book "The Great Book" by John Doe (2020)
+E-book "Digital Book" by John Doe (2021) - Available at: https://example.com/ebook
+```
