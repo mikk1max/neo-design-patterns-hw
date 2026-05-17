@@ -1,0 +1,37 @@
+{
+  "name": "neo-design-patterns-hw",
+  "version": "1.0.0",
+  "description": "У реальних проєктах погана архітектура часто не видно одразу — але з часом вона ускладнює підтримку, тестування та розвиток системи. Це завдання — можливість попрактикуватися у виявленні таких недоліків і вдосконаленні структури проєкту за принципами SOLID. Ви побачите, як через правильні абстракції та інтерфейси код стає зрозумілішим, гнучкішим і готовим до змін.",
+  "main": "index.js",
+  "dependencies": {
+    "acorn": "^8.16.0",
+    "acorn-walk": "^8.3.5",
+    "arg": "^4.1.3",
+    "create-require": "^1.1.1",
+    "diff": "^4.0.4",
+    "make-error": "^1.3.6",
+    "undici-types": "^7.24.6",
+    "v8-compile-cache-lib": "^3.0.1",
+    "yn": "^3.1.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.8.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikk1max/neo-design-patterns-hw.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mikk1max/neo-design-patterns-hw/issues"
+  },
+  "homepage": "https://github.com/mikk1max/neo-design-patterns-hw#readme"
+}

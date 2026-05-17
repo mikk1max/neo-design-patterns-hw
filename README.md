@@ -1,63 +1,33 @@
-# Домашні завдання до курсу "Design Patterns"
+# Домашнє завдання до Теми Принципи проєктування SOLID
 
-Цей репозиторій містить набір домашніх завдань для курсу "Design Patterns". Кожна папка або файл — це стартова реалізація певного патерну або їх комбінації, яку студент має довести до логічного завершення.
+У реальних проєктах погана архітектура часто не видно одразу — але з часом вона ускладнює підтримку, тестування та розвиток системи. Це завдання — можливість попрактикуватися у виявленні таких недоліків і вдосконаленні структури проєкту за принципами SOLID. Ви побачите, як через правильні абстракції та інтерфейси код стає зрозумілішим, гнучкішим і готовим до змін.
 
-## Як працювати з цим репозиторієм
+### Опис завдання
 
-- Для кожного завдання надано початковий код із заглушками, підказками та базовою структурою.
-- Ваше завдання — реалізувати відсутню логіку, дотримуючись принципів відповідного патерну проектування.
-- Уважно читайте TODO-коментарі та підказки у файлах — вони вказують, що саме потрібно доробити.
-- Деякі завдання містять мінімальну реалізацію, яку треба розширити, перевірити або оптимізувати.
+Вам надано приклад простої системи повідомлень, у якій навмисно реалізовано архітектуру, що порушує принципи проєктування SOLID. Ваше завдання — провести архітектурний рефакторинг, дотримуючись принципів SOLID, та реалізувати систему повідомлень, яка може бути масштабовано, легко підтримуваною та модульною.
 
-## Структура
+### Очікуваний результат
 
-- Кожна папка або файл відповідає окремому завданню або частині великого завдання (наприклад, фінального проєкту).
-- Для фінального проєкту є окремий README з детальним описом вимог, структури та інструкцій по запуску у папці hw12_final.
-
-## Рекомендації
-
-- Дотримуйтесь принципів SOLID та best practices для обраного патерну.
-- Не бійтеся рефакторити стартовий код, якщо це потрібно для кращої відповідності патерну.
-- Пояснюйте свої рішення у коментарях, якщо реалізація нетривіальна.
-
-## Як здавати
-
-- Завершене завдання має містити робочий код без помилок компіляції/запуску.
-- Оформіть та надайте посилання на свій репозиторій згідно з інструкціями LMS.
+- Усі канали повідомлень `Email`, `SMS`, `Push` мають бути окремими сервісами, які реалізують спільний інтерфейс.
+- Клас `NotificationService` не повинен знати про конкретні реалізації каналів.
+- `Logger` має бути переданим як залежність через інтерфейс.
+- Клас `User` більше не викликає логіку повідомлень.
+- У `main.ts` повинна бути наочно продемонстрована взаємодія з системою через абстракції.
 
 ---
 
-Успіхів у вивченні патернів проектування! Якщо виникають питання — звертайтесь до ментора або обговорюйте у чаті курсу.
+# HW02 — SOLID Design Principles
 
----
+In real projects, poor architecture is often not obvious at first — but over time it makes the system harder to maintain, test, and evolve. This assignment is an opportunity to practise identifying such flaws and improving project structure according to SOLID principles. You will see how proper abstractions and interfaces make code cleaner, more flexible, and ready for change.
 
-# Design Patterns Course — Homework
+## Assignment description
 
-This repository contains homework assignments for the "Design Patterns" course. Each folder or file is a starter implementation of a specific pattern or combination of patterns that students are expected to complete.
+You are given an example of a simple notification system in which the architecture deliberately violates SOLID principles. Your task is to perform an architectural refactoring following SOLID, producing a notification system that is scalable, easily maintainable, and modular.
 
-## How to work with this repository
+## Expected result
 
-- Each assignment provides starter code with stubs, hints, and a base structure.
-- Your task is to implement the missing logic following the principles of the relevant design pattern.
-- Read the TODO comments and hints in the files carefully — they indicate exactly what needs to be done.
-- Some assignments contain a minimal implementation that needs to be extended, verified, or optimised.
-
-## Structure
-
-- Each folder or file corresponds to a separate assignment or part of a larger task (e.g. the final project).
-- The final project has its own README with a detailed description of requirements, structure, and run instructions inside the `hw12_final` folder.
-
-## Recommendations
-
-- Follow SOLID principles and best practices for the chosen pattern.
-- Feel free to refactor the starter code if it helps better align with the pattern.
-- Explain your decisions in comments when the implementation is non-trivial.
-
-## How to submit
-
-- The completed assignment must contain working code with no compilation or runtime errors.
-- Format and provide a link to your repository according to the LMS instructions.
-
----
-
-Good luck learning design patterns! If you have questions — reach out to your mentor or discuss in the course chat.
+- All notification channels (`Email`, `SMS`, `Push`) must be separate services implementing a shared interface.
+- The `NotificationService` class must not know about the concrete channel implementations.
+- `Logger` must be injected as a dependency through an interface.
+- The `User` class no longer invokes notification logic.
+- `main.ts` must clearly demonstrate interaction with the system through abstractions.
