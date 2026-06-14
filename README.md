@@ -1,63 +1,191 @@
-# Домашні завдання до курсу "Design Patterns"
+# Домашнє завдання до Теми Поведінковий патерн Команда
 
-Цей репозиторій містить набір домашніх завдань для курсу "Design Patterns". Кожна папка або файл — це стартова реалізація певного патерну або їх комбінації, яку студент має довести до логічного завершення.
+# Реалізація TODO-застосунку з використанням патерну Команда
 
-## Як працювати з цим репозиторієм
+## Опис завдання
 
-- Для кожного завдання надано початковий код із заглушками, підказками та базовою структурою.
-- Ваше завдання — реалізувати відсутню логіку, дотримуючись принципів відповідного патерну проектування.
-- Уважно читайте TODO-коментарі та підказки у файлах — вони вказують, що саме потрібно доробити.
-- Деякі завдання містять мінімальну реалізацію, яку треба розширити, перевірити або оптимізувати.
+У цьому домашньому завданні вам необхідно реалізувати простий, але функціональний TODO-застосунок з використанням патерну **Команда**.
 
-## Структура
+Мета — закріпити розуміння патерну через розробку простого керованого TODO-застосунку із підтримкою додавання, видалення, оновлення задач і керування історією `undo/redo`.
 
-- Кожна папка або файл відповідає окремому завданню або частині великого завдання (наприклад, фінального проєкту).
-- Для фінального проєкту є окремий README з детальним описом вимог, структури та інструкцій по запуску у папці hw12_final.
+Потрібно реалізувати консольний TODO-застосунок, де кожна дія над задачами оформлена у вигляді об'єкта-команди, де:
 
-## Рекомендації
+- Кожна дія над задачами (додавання, редагування, видалення, позначення виконання) — це окрема команда.
+- Всі команди виконуються через єдиний диспетчер `CommandHistory`.
+- Можна скасувати `undo` або повторити `redo` останні дії.
 
-- Дотримуйтесь принципів SOLID та best practices для обраного патерну.
-- Не бійтеся рефакторити стартовий код, якщо це потрібно для кращої відповідності патерну.
-- Пояснюйте свої рішення у коментарях, якщо реалізація нетривіальна.
+## Завдання
 
-## Як здавати
+Структура проєкту
 
-- Завершене завдання має містити робочий код без помилок компіляції/запуску.
-- Оформіть та надайте посилання на свій репозиторій згідно з інструкціями LMS.
+```
+/
+└── src/
+    ├── commands/
+    │   ├── Command.ts              # Інтерфейс базової команди
+    │   ├── AbstractCommand.ts      # Абстрактна реалізація команди із базовим redo
+    │   ├── AddTaskCommand.ts       # Додавання нової задачі до списку (реалізовано)
+    │   ├── RemoveTaskCommand.ts    # Видалення задачі зі списку (не реалізовано)
+    │   ├── UpdateTaskCommand.ts    # Оновлення полів існуючої задачі (не реалізовано)
+    │   ├── CompleteTaskCommand.ts  # Позначення статусу задачі (не реалізовано)
+    │   └── CommandHistory.ts       # Історія виконаних команд для підтримки undo/redo
+    ├── models/
+    │   ├── Task.ts                 # Модель задачі
+    │   └── TaskList.ts             # Колекція задач з необхідними методами
+    ├── services/
+    │   └── TaskManager.ts          # Менеджер задач
+    └── main.ts                     # Точка входу - демонстрація роботи
+```
+
+Проєкт має наступні модулі:
+
+| **Модуль**            | **Призначення**                                         |
+| --------------------- | ------------------------------------------------------- |
+| `Task`                | Модель окремої задачі                                   |
+| `TaskList`            | Колекція всіх задач                                     |
+| `Command`             | Інтерфейс команди (`execute`, `undo`, `redo`)           |
+| `AbstractCommand`     | Базова абстрактна команда                               |
+| `AddTaskCommand`      | Команда для додавання задачі                            |
+| `RemoveTaskCommand`   | Команда для видалення задачі (потрібно реалізувати)     |
+| `UpdateTaskCommand`   | Команда для оновлення задачі (потрібно реалізувати)     |
+| `CompleteTaskCommand` | Команда для зміни статусу задачі (потрібно реалізувати) |
+| `CommandHistory`      | Історія команд для підтримки `undo`, `redo`             |
+| `TaskManager`         | Менеджер задач, що обгортає `TaskList` та історію       |
+| `main.ts`             | Приклад використання                                    |
+
+Вам надано вже початкові реалізації.
+
+## Очікуваний результат
+
+Після запуску демонстраційного файлу `main.ts` командою:
+
+```bash
+npx ts-node ./src/main.ts
+```
+
+система повинна послідовно виконати такі дії:
+
+```bash
+--- Після додавання задачі ---
+[
+  {
+    id: 'malq1890pizz2ibuob',
+    createdAt: 2025-05-12T23:35:50.532Z,
+    completed: false,
+    title: 'Завершити домашнє завдання',
+    priority: 'high'
+  }
+]
+--- Після оновлення задачі ---
+[
+  {
+    id: 'malq1890pizz2ibuob',
+    createdAt: 2025-05-12T23:35:50.532Z,
+    completed: false,
+    title: 'Завершити складне домашнє завдання',
+    priority: 'medium'
+  }
+]
+--- Після позначення як виконаної ---
+[
+  {
+    id: 'malq1890pizz2ibuob',
+    createdAt: 2025-05-12T23:35:50.532Z,
+    completed: true,
+    title: 'Завершити складне домашнє завдання',
+    priority: 'medium'
+  }
+]
+--- Після видалення задачі ---
+[]
+--- Після undo видалення ---
+[
+  {
+    id: 'malq1890pizz2ibuob',
+    createdAt: 2025-05-12T23:35:50.532Z,
+    completed: true,
+    title: 'Завершити складне домашнє завдання',
+    priority: 'medium'
+  }
+]
+--- Після undo виконання задачі ---
+[
+  {
+    id: 'malq1890pizz2ibuob',
+    createdAt: 2025-05-12T23:35:50.532Z,
+    completed: false,
+    title: 'Завершити складне домашнє завдання',
+    priority: 'medium'
+  }
+]
+--- Після undo оновлення задачі ---
+[
+  {
+    id: 'malq1890pizz2ibuob',
+    createdAt: 2025-05-12T23:35:50.532Z,
+    completed: false,
+    title: 'Завершити домашнє завдання',
+    priority: 'high'
+  }
+]
+--- Після undo додавання задачі ---
+[]
+--- Після redo додавання задачі ---
+[
+  {
+    id: 'malq1890pizz2ibuob',
+    createdAt: 2025-05-12T23:35:50.532Z,
+    completed: false,
+    title: 'Завершити домашнє завдання',
+    priority: 'high'
+  }
+]
+--- Після redo оновлення задачі ---
+[
+  {
+    id: 'malq1890pizz2ibuob',
+    createdAt: 2025-05-12T23:35:50.532Z,
+    completed: false,
+    title: 'Завершити складне домашнє завдання',
+    priority: 'medium'
+  }
+]
+--- Після redo виконання задачі ---
+[
+  {
+    id: 'malq1890pizz2ibuob',
+    createdAt: 2025-05-12T23:35:50.532Z,
+    completed: true,
+    title: 'Завершити складне домашнє завдання',
+    priority: 'medium'
+  }
+]
+--- Після redo видалення задачі ---
+[]
+```
 
 ---
 
-Успіхів у вивченні патернів проектування! Якщо виникають питання — звертайтесь до ментора або обговорюйте у чаті курсу.
+# HW10 — Behavioural Pattern: Command
 
----
+## Assignment description
 
-# Design Patterns Course — Homework
+Implement a simple but functional TODO application using the **Command** pattern. Each action on tasks (add, update, delete, complete) is encapsulated as a command object. All commands are executed through a single `CommandHistory` dispatcher that supports `undo` and `redo`.
 
-This repository contains homework assignments for the "Design Patterns" course. Each folder or file is a starter implementation of a specific pattern or combination of patterns that students are expected to complete.
+## Project structure
 
-## How to work with this repository
+```
+src/
+├── commands/   # Command interface, AbstractCommand, Add/Remove/Update/CompleteTaskCommand, CommandHistory
+├── models/     # Task, TaskList
+├── services/   # TaskManager
+└── main.ts
+```
 
-- Each assignment provides starter code with stubs, hints, and a base structure.
-- Your task is to implement the missing logic following the principles of the relevant design pattern.
-- Read the TODO comments and hints in the files carefully — they indicate exactly what needs to be done.
-- Some assignments contain a minimal implementation that needs to be extended, verified, or optimised.
+## How to run
 
-## Structure
+```bash
+npx ts-node ./src/main.ts
+```
 
-- Each folder or file corresponds to a separate assignment or part of a larger task (e.g. the final project).
-- The final project has its own README with a detailed description of requirements, structure, and run instructions inside the `hw12_final` folder.
-
-## Recommendations
-
-- Follow SOLID principles and best practices for the chosen pattern.
-- Feel free to refactor the starter code if it helps better align with the pattern.
-- Explain your decisions in comments when the implementation is non-trivial.
-
-## How to submit
-
-- The completed assignment must contain working code with no compilation or runtime errors.
-- Format and provide a link to your repository according to the LMS instructions.
-
----
-
-Good luck learning design patterns! If you have questions — reach out to your mentor or discuss in the course chat.
+The application sequentially adds, updates, completes, and deletes a task, then performs a full undo sequence followed by a full redo sequence, printing the task list after each operation.
