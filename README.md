@@ -1,63 +1,93 @@
-# Домашні завдання до курсу "Design Patterns"
+# Домашнє завдання до Теми Структурні патерни: Декоратор та Замісник
 
-Цей репозиторій містить набір домашніх завдань для курсу "Design Patterns". Кожна папка або файл — це стартова реалізація певного патерну або їх комбінації, яку студент має довести до логічного завершення.
+### **Опис завдання**
 
-## Як працювати з цим репозиторієм
+Мета домашнього завдання — навчитися поєднувати два структурні патерни у спрощеній моделі сервісу повідомлень:
 
-- Для кожного завдання надано початковий код із заглушками, підказками та базовою структурою.
-- Ваше завдання — реалізувати відсутню логіку, дотримуючись принципів відповідного патерну проектування.
-- Уважно читайте TODO-коментарі та підказки у файлах — вони вказують, що саме потрібно доробити.
-- Деякі завдання містять мінімальну реалізацію, яку треба розширити, перевірити або оптимізувати.
+- **Декоратор (Decorator)** — дозволяє розширювати функціональність сервісу повідомлень без зміни його коду;
+- **Замісник (Proxy)** — обмежує частоту звернень до сервісу, імітуючи rate-limit поведінку, як у реальних API.
 
-## Структура
+Ваше завдання — реалізувати консольну утиліту, яка:
 
-- Кожна папка або файл відповідає окремому завданню або частині великого завдання (наприклад, фінального проєкту).
-- Для фінального проєкту є окремий README з детальним описом вимог, структури та інструкцій по запуску у папці hw12_final.
+- надає інтерфейс `send(message: string): void`;
+- надсилає повідомлення через базовий сервіс в термінал;
+- обгортає цей сервіс у декоратори, які змінюють текст повідомлення;
+- застосовує Замісник, що блокує надсилання повідомлень, якщо вони надходять надто часто;
+- демонструє розмежування відповідальностей, відкритість до розширення і чітке дотримання структурних патернів.
 
-## Рекомендації
+## Встановлення та запуск
 
-- Дотримуйтесь принципів SOLID та best practices для обраного патерну.
-- Не бійтеся рефакторити стартовий код, якщо це потрібно для кращої відповідності патерну.
-- Пояснюйте свої рішення у коментарях, якщо реалізація нетривіальна.
+1. Встановлення залежностей:
 
-## Як здавати
+```bash
+npm install
+```
 
-- Завершене завдання має містити робочий код без помилок компіляції/запуску.
-- Оформіть та надайте посилання на свій репозиторій згідно з інструкціями LMS.
+2. Запуск демонстрації:
+
+```bash
+npm start
+```
+
+## Очікуваний результат
+
+```
+Тестуємо систему анти-спаму:
+[2024-02-20 15:30:00] ПРИВІТ! ЯК СПРАВИ?
+[RateLimit] skipped
+
+Після очікування 1 секунди:
+[2024-02-20 15:30:01] ЦЕ ПОВІДОМЛЕННЯ ВЖЕ ПРОЙДЕ, БО МИ ПОЧЕКАЛИ
+```
+
+## Структура проекту
+
+- `src/IMessageService.ts` - інтерфейс сервісу повідомлень
+- `src/MessageService.ts` - основний сервіс з декораторами
+- `src/decorators.ts` - TypeScript декоратори для модифікації повідомлень
+- `src/RateLimitProxy.ts` - фабрична функція для створення проксі
+- `src/main.ts` - демонстрація роботи системи
+
+## Використані патерни
+
+1. **Декоратори** (TypeScript Stage 3):
+
+   - Модифікують поведінку методу `send` без зміни його коду
+   - Використовують сучасний синтаксис декораторів
+   - Реалізовані з типобезпечним кодом
+
+2. **Proxy** (вбудований JavaScript Proxy):
+   - Перехоплює виклики методів об'єкта
+   - Реалізує захист від спаму через обмеження частоти
+   - Забезпечує прозорий доступ до оригінального об'єкта
 
 ---
 
-Успіхів у вивченні патернів проектування! Якщо виникають питання — звертайтесь до ментора або обговорюйте у чаті курсу.
+# HW06 — Structural Patterns: Decorator & Proxy
 
----
+## Assignment description
 
-# Design Patterns Course — Homework
+The goal is to learn how to combine two structural patterns in a simplified messaging service model:
 
-This repository contains homework assignments for the "Design Patterns" course. Each folder or file is a starter implementation of a specific pattern or combination of patterns that students are expected to complete.
+- **Decorator** — extends the service's functionality without modifying its code.
+- **Proxy** — limits the rate of calls to the service, simulating rate-limit behaviour found in real APIs.
 
-## How to work with this repository
+Implement a CLI utility that provides a `send(message: string): void` interface, sends messages through a base service, wraps it in decorators that transform the message text, and applies a Proxy that blocks messages sent too frequently.
 
-- Each assignment provides starter code with stubs, hints, and a base structure.
-- Your task is to implement the missing logic following the principles of the relevant design pattern.
-- Read the TODO comments and hints in the files carefully — they indicate exactly what needs to be done.
-- Some assignments contain a minimal implementation that needs to be extended, verified, or optimised.
+## How to run
 
-## Structure
+```bash
+npm install
+npm start
+```
 
-- Each folder or file corresponds to a separate assignment or part of a larger task (e.g. the final project).
-- The final project has its own README with a detailed description of requirements, structure, and run instructions inside the `hw12_final` folder.
+## Expected output
 
-## Recommendations
+```
+Testing the anti-spam system:
+[2024-02-20 15:30:00] HELLO! HOW ARE YOU?
+[RateLimit] skipped
 
-- Follow SOLID principles and best practices for the chosen pattern.
-- Feel free to refactor the starter code if it helps better align with the pattern.
-- Explain your decisions in comments when the implementation is non-trivial.
-
-## How to submit
-
-- The completed assignment must contain working code with no compilation or runtime errors.
-- Format and provide a link to your repository according to the LMS instructions.
-
----
-
-Good luck learning design patterns! If you have questions — reach out to your mentor or discuss in the course chat.
+After waiting 1 second:
+[2024-02-20 15:30:01] THIS MESSAGE WILL GO THROUGH BECAUSE WE WAITED
+```
