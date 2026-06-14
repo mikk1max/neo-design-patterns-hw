@@ -1,63 +1,83 @@
-# Домашні завдання до курсу "Design Patterns"
+# Домашнє завдання до Теми Поведінкові патерни: Ланцюжок відповідальностей та Посередник
 
-Цей репозиторій містить набір домашніх завдань для курсу "Design Patterns". Кожна папка або файл — це стартова реалізація певного патерну або їх комбінації, яку студент має довести до логічного завершення.
+### Опис завдання
 
-## Як працювати з цим репозиторієм
+Мета домашнього завдання — закріпити знання поведінкових патернів, **Ланцюжок відповідальностей** та **Посередник**, у сценарії обробки даних наближеному до реальності.
 
-- Для кожного завдання надано початковий код із заглушками, підказками та базовою структурою.
-- Ваше завдання — реалізувати відсутню логіку, дотримуючись принципів відповідного патерну проектування.
-- Уважно читайте TODO-коментарі та підказки у файлах — вони вказують, що саме потрібно доробити.
-- Деякі завдання містять мінімальну реалізацію, яку треба розширити, перевірити або оптимізувати.
+Ви реалізуєте систему, яка приймає масив записів у форматі `JSON`, проводить їхню валідацію, обробку та зберігає результати у відповідні файли залежно від формату.
 
-## Структура
+Ваша задача — реалізувати обробник вхідних записів у форматі `.json`, кожен з яких має поле `type` та специфічну структуру. Дані необхідно передати через ланцюг обробників, який виконує валідацію та підготовку до збереження. Залежно від типу, результат зберігається у відповідний файл через централізованого посередника. У разі помилки — запис фіксується у файл відхилених `rejected.jsonl`.
 
-- Кожна папка або файл відповідає окремому завданню або частині великого завдання (наприклад, фінального проєкту).
-- Для фінального проєкту є окремий README з детальним описом вимог, структури та інструкцій по запуску у папці hw12_final.
+Тож весь процес організовано у два рівні:
 
-## Рекомендації
+- Ланцюжки відповідальності відповідають за обробку даних різних типів: `access_log`, `transaction`, `system_error`;
+- Посередник централізує процес збереження та маршрутизації результатів: успішні та помилкові записи.
 
-- Дотримуйтесь принципів SOLID та best practices для обраного патерну.
-- Не бійтеся рефакторити стартовий код, якщо це потрібно для кращої відповідності патерну.
-- Пояснюйте свої рішення у коментарях, якщо реалізація нетривіальна.
+Це завдання моделює практичну утиліту, яка аналізує структуровані дані, фільтрує помилки та зберігає звіти у форматі `.json`, `.csv` та `.jsonl`.
 
-## Як здавати
+## Завдання
 
-- Завершене завдання має містити робочий код без помилок компіляції/запуску.
-- Оформіть та надайте посилання на свій репозиторій згідно з інструкціями LMS.
+Структура проєкту
 
----
+```
+/
+├── data/
+│   └── records.json                  # Вхідний файл з необробленими записами
+├── chain/
+│   ├── AbstractHandler.ts           # Базовий клас для ланцюга відповідальностей
+│   ├── handlers/
+│   │   ├── TimestampParser.ts       # Парсинг timestamp у формат ISO
+│   │   ├── UserIdValidator.ts       # Перевірка коректності userId
+│   │   ├── IpValidator.ts           # Перевірка валідності IP-адреси (IPv4)
+│   │   ├── AmountParser.ts          # Парсинг числових значень amount
+│   │   ├── CurrencyNormalizer.ts    # Нормалізація валютного поля (ISO-формат)
+│   │   ├── LevelValidator.ts        # Валідація рівня помилки (error, warning, info)
+│   │   └── MessageTrimmer.ts        # Обрізання пробілів у повідомленні
+│   └── chains/
+│       ├── AccessLogChain.ts        # Ланцюг обробки access_log
+│       ├── TransactionChain.ts      # Ланцюг обробки transaction
+│       └── SystemErrorChain.ts      # Ланцюг обробки system_error
+├── mediator/
+│   ├── ProcessingMediator.ts        # Центральний посередник для збереження результатів
+│   └── writers/
+│       ├── AccessLogWriter.ts       # Збереження access_log у CSV
+│       ├── TransactionWriter.ts     # Збереження transaction у JSON
+│       ├── ErrorLogWriter.ts        # Збереження system_error у JSONL
+│       └── RejectedWriter.ts        # Відхилені записи з помилками у JSONL
+├── output/                          # Директорія для вихідних файлів
+├── models/
+│   └── DataRecord.ts                # Структура одного запису
+└── main.ts                          # Точка входу для запуску
+```
 
-Успіхів у вивченні патернів проектування! Якщо виникають питання — звертайтесь до ментора або обговорюйте у чаті курсу.
-
----
-
-# Design Patterns Course — Homework
-
-This repository contains homework assignments for the "Design Patterns" course. Each folder or file is a starter implementation of a specific pattern or combination of patterns that students are expected to complete.
-
-## How to work with this repository
-
-- Each assignment provides starter code with stubs, hints, and a base structure.
-- Your task is to implement the missing logic following the principles of the relevant design pattern.
-- Read the TODO comments and hints in the files carefully — they indicate exactly what needs to be done.
-- Some assignments contain a minimal implementation that needs to be extended, verified, or optimised.
-
-## Structure
-
-- Each folder or file corresponds to a separate assignment or part of a larger task (e.g. the final project).
-- The final project has its own README with a detailed description of requirements, structure, and run instructions inside the `hw12_final` folder.
-
-## Recommendations
-
-- Follow SOLID principles and best practices for the chosen pattern.
-- Feel free to refactor the starter code if it helps better align with the pattern.
-- Explain your decisions in comments when the implementation is non-trivial.
-
-## How to submit
-
-- The completed assignment must contain working code with no compilation or runtime errors.
-- Format and provide a link to your repository according to the LMS instructions.
+Вхідні дані — файл `records.json` містить масив записів.
 
 ---
 
-Good luck learning design patterns! If you have questions — reach out to your mentor or discuss in the course chat.
+# HW11 — Behavioural Patterns: Chain of Responsibility & Mediator
+
+## Assignment description
+
+Implement a data-processing system that reads an array of JSON records, validates and transforms them through a chain of handlers, and saves the results to the appropriate files. In case of an error, the record is written to a `rejected.jsonl` file.
+
+- **Chain of Responsibility** — separate chains handle each record type: `access_log`, `transaction`, `system_error`.
+- **Mediator** — centralises saving and routing of results (both successful and rejected records).
+
+## Project structure
+
+```
+chain/       # AbstractHandler, handlers (validators/parsers), chains per type
+mediator/    # ProcessingMediator, writers (AccessLogWriter, TransactionWriter, etc.)
+data/        # records.json — input file
+models/      # DataRecord
+output/      # Generated output files
+main.ts
+```
+
+## How to run
+
+```bash
+npx ts-node main.ts
+```
+
+Output files are saved to the `output/` directory (`.json`, `.csv`, `.jsonl` formats).
