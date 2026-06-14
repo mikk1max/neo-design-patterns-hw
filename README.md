@@ -1,63 +1,125 @@
-# Домашні завдання до курсу "Design Patterns"
+# Домашнє завдання до Теми Структурні патерни: Компонувальник та Міст
 
-Цей репозиторій містить набір домашніх завдань для курсу "Design Patterns". Кожна папка або файл — це стартова реалізація певного патерну або їх комбінації, яку студент має довести до логічного завершення.
+### Опис завдання
 
-## Як працювати з цим репозиторієм
+У цьому домашньому завданні необхідно буде реалізувати систему генерації документів, яка дозволяє створювати документ із кількох вкладених блоків. Буде три види блоків — параграфи, списки та секції. Документи необхідно зберігати і виводити у різних форматах: Markdown, HTML, plain text (чистий текст).
 
-- Для кожного завдання надано початковий код із заглушками, підказками та базовою структурою.
-- Ваше завдання — реалізувати відсутню логіку, дотримуючись принципів відповідного патерну проектування.
-- Уважно читайте TODO-коментарі та підказки у файлах — вони вказують, що саме потрібно доробити.
-- Деякі завдання містять мінімальну реалізацію, яку треба розширити, перевірити або оптимізувати.
+Архітектура застосунку повинна демонструвати чітке розділення відповідальностей:
 
-## Структура
+- структура документа моделюється у вигляді дерева елементів, де `Section` є вузлом, який містить інші елементи;
+- форматування виводу делегується окремим об’єктам — рендерерам, що реалізують єдиний інтерфейс.
 
-- Кожна папка або файл відповідає окремому завданню або частині великого завдання (наприклад, фінального проєкту).
-- Для фінального проєкту є окремий README з детальним описом вимог, структури та інструкцій по запуску у папці hw12_final.
+Це завдання ілюструє два структурні патерни:
 
-## Рекомендації
+- Composite — має бути реалізовано в класі `Section`, який дозволяє створювати ієрархію елементів `DocNode`;
+- Bridge — має бути реалізовано через інтерфейс `DocRenderer`, який можна підставляти у будь-який елемент для зміни формату виводу.
 
-- Дотримуйтесь принципів SOLID та best practices для обраного патерну.
-- Не бійтеся рефакторити стартовий код, якщо це потрібно для кращої відповідності патерну.
-- Пояснюйте свої рішення у коментарях, якщо реалізація нетривіальна.
+## Структура проекту
 
-## Як здавати
+```
+src/
+├── interfaces/          # Інтерфейси
+│   ├── DocNode.ts      # Базовий інтерфейс для всіх елементів документа
+│   └── DocRenderer.ts  # Інтерфейс для рендерерів
+├── renderers/          # Реалізації рендерерів
+│   ├── BaseRenderer.ts      # Базовий клас для рендерерів
+│   ├── HTMLRenderer.ts      # HTML формат
+│   ├── MarkdownRenderer.ts  # Markdown формат
+│   └── PlainTextRenderer.ts # Простий текст
+├── nodes/              # Елементи документа
+│   ├── List.ts        # Список
+│   ├── Paragraph.ts   # Параграф
+│   └── Section.ts     # Секція (Composite)
+├── factories/          # Фабрики
+│   └── RendererFactory.ts  # Фабрика для створення рендерерів
+└── main.ts            # Точка входу
+```
 
-- Завершене завдання має містити робочий код без помилок компіляції/запуску.
-- Оформіть та надайте посилання на свій репозиторій згідно з інструкціями LMS.
+## Патерни проектування
+
+### Composite
+
+- Реалізовано в класі `Section`, який може містити інші елементи документа
+- Всі елементи документа реалізують інтерфейс `DocNode`
+- Дозволяє створювати деревоподібну структуру документа
+- `Section` може містити `Paragraph`, `List` та інші `Section`
+
+### Bridge
+
+- Відокремлює абстракцію (`DocNode`) від реалізації (`DocRenderer`)
+- Дозволяє незалежно змінювати формат виводу та структуру документа
+- Реалізовано через:
+  - Інтерфейс `DocRenderer`
+  - Базовий клас `BaseRenderer`
+  - Конкретні рендерери: `HTMLRenderer`, `MarkdownRenderer`, `PlainTextRenderer`
+
+## Встановлення
+
+```bash
+npm install
+```
+
+## Використання
+
+### Запуск з виводом в консоль
+
+```bash
+npm start -- markdown  # Markdown формат
+npm start -- plain    # Простий текст
+npm start -- html     # HTML формат
+```
+
+### Збереження у файл
+
+```bash
+npm start -- html output.html     # Зберегти як HTML
+npm start -- markdown output.md   # Зберегти як Markdown
+npm start -- plain output.txt     # Зберегти як текст
+```
+
+``
+
+## Розширення
+
+Для додавання нового формату виводу:
+
+1. Створіть новий клас рендерера в `src/renderers/`
+2. Успадкуйте його від `BaseRenderer`
+3. Реалізуйте необхідні методи
+4. Додайте новий формат у `RendererFactory`
 
 ---
 
-Успіхів у вивченні патернів проектування! Якщо виникають питання — звертайтесь до ментора або обговорюйте у чаті курсу.
+# HW07 — Structural Patterns: Composite & Bridge
 
----
+## Assignment description
 
-# Design Patterns Course — Homework
+Implement a document generation system that allows creating a document from several nested blocks: paragraphs, lists, and sections. Documents must be saved and rendered in different formats: Markdown, HTML, and plain text.
 
-This repository contains homework assignments for the "Design Patterns" course. Each folder or file is a starter implementation of a specific pattern or combination of patterns that students are expected to complete.
+- **Composite** — implemented in the `Section` class, which allows building a tree hierarchy of `DocNode` elements.
+- **Bridge** — implemented through the `DocRenderer` interface, which can be swapped into any element to change the output format.
 
-## How to work with this repository
+## Project structure
 
-- Each assignment provides starter code with stubs, hints, and a base structure.
-- Your task is to implement the missing logic following the principles of the relevant design pattern.
-- Read the TODO comments and hints in the files carefully — they indicate exactly what needs to be done.
-- Some assignments contain a minimal implementation that needs to be extended, verified, or optimised.
+```
+src/
+├── interfaces/   # DocNode and DocRenderer interfaces
+├── renderers/    # HTMLRenderer, MarkdownRenderer, PlainTextRenderer
+├── nodes/        # Paragraph, List, Section (Composite)
+├── factories/    # RendererFactory
+└── main.ts
+```
 
-## Structure
+## How to run
 
-- Each folder or file corresponds to a separate assignment or part of a larger task (e.g. the final project).
-- The final project has its own README with a detailed description of requirements, structure, and run instructions inside the `hw12_final` folder.
+```bash
+npm install
+npm start -- markdown          # Markdown output
+npm start -- plain             # Plain text output
+npm start -- html              # HTML output
+npm start -- html output.html  # Save to file
+```
 
-## Recommendations
+## Extending
 
-- Follow SOLID principles and best practices for the chosen pattern.
-- Feel free to refactor the starter code if it helps better align with the pattern.
-- Explain your decisions in comments when the implementation is non-trivial.
-
-## How to submit
-
-- The completed assignment must contain working code with no compilation or runtime errors.
-- Format and provide a link to your repository according to the LMS instructions.
-
----
-
-Good luck learning design patterns! If you have questions — reach out to your mentor or discuss in the course chat.
+To add a new output format: create a new renderer in `src/renderers/`, extend `BaseRenderer`, implement the required methods, and register it in `RendererFactory`.
