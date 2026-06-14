@@ -1,63 +1,92 @@
-# Домашні завдання до курсу "Design Patterns"
+# Домашнє завдання до Теми Поведінковий патерн Спостерігач
 
-Цей репозиторій містить набір домашніх завдань для курсу "Design Patterns". Кожна папка або файл — це стартова реалізація певного патерну або їх комбінації, яку студент має довести до логічного завершення.
+## Опис завдання
 
-## Як працювати з цим репозиторієм
+У цьому домашньому завданні необхідно додати до генератора документа (попереднє домашнє завдання) реактивний шар, який дозволяє відслідковувати процес рендерингу окремих елементів документа. Під час генерації кожен елемент `Paragraph`, `List`, `Section` має повідомляти про те, що він закінчив роботу. Реакція на ці події має реалізовуватись через механізм підписки — тобто через патерн Спостерігач (Observer).
 
-- Для кожного завдання надано початковий код із заглушками, підказками та базовою структурою.
-- Ваше завдання — реалізувати відсутню логіку, дотримуючись принципів відповідного патерну проектування.
-- Уважно читайте TODO-коментарі та підказки у файлах — вони вказують, що саме потрібно доробити.
-- Деякі завдання містять мінімальну реалізацію, яку треба розширити, перевірити або оптимізувати.
+Центральний об'єкт має називатися `RenderEventPublisher`, який зберігає список підписників і розсилає їм повідомлення про подію, що відбулася. Кожен підписник реалізує інтерфейс `RenderEventSubscriber`, який містить метод `update(context: RenderContext)`. Події передаються у вигляді об’єкта типу `RenderContext`, який включає тип елемента, його вміст, додаткову інформацію, як рівень заголовка, кількість пунктів у списку, а також час рендерингу.
 
-## Структура
+Після інтеграції підписників, кожен елемент документа під час рендерингу зможе надсилати подію, на яку реагують підключені сервіси — наприклад, логування або збір статистики. Це дозволяє безболісно розширювати застосунок новими компонентами, такими як логери, аналітика, профайлери, системи повідомлень тощо.
 
-- Кожна папка або файл відповідає окремому завданню або частині великого завдання (наприклад, фінального проєкту).
-- Для фінального проєкту є окремий README з детальним описом вимог, структури та інструкцій по запуску у папці hw12_final.
+## Структура проекту
 
-## Рекомендації
+```
+src/
+├── main.ts
+├── RenderEventPublisher.ts
+├── interfaces/
+│   ├── RenderEventSubscriber.ts
+│   ├── RenderContext.ts
+│   ├── DocNode.ts
+│   └── DocRenderer.ts
+├── subscribers/
+│   ├── RenderLoggerSubscriber.ts
+│   ├── SummaryCollector.ts
+│   └── PerformanceSubscriber.ts
+├── nodes/
+│   ├── Section.ts
+│   ├── Paragraph.ts
+│   └── List.ts
+├── factories/
+│   └── RendererFactory.ts
+└── renderers/
+    ├── HTMLRenderer.ts
+    ├── MarkdownRenderer.ts
+    ├── PlainTextRenderer.ts
+    └── BaseRenderer.ts
+```
 
-- Дотримуйтесь принципів SOLID та best practices для обраного патерну.
-- Не бійтеся рефакторити стартовий код, якщо це потрібно для кращої відповідності патерну.
-- Пояснюйте свої рішення у коментарях, якщо реалізація нетривіальна.
+## Як реалізовано патерн Observer
 
-## Як здавати
+- Кожен елемент (Section, Paragraph, List) після рендеру викликає:
+  ```ts
+  RenderEventPublisher.notify(context);
+  ```
+- `RenderEventPublisher` — статичний клас, керує підписниками (subscribe/unsubscribe/notify)
+- `RenderEventSubscriber` — інтерфейс підписника (метод update)
+- `RenderContext` — об'єкт події (тип елемента, вміст, рівень, items, renderTime)
+- Підписники (`subscribers/`):
+  - `RenderLoggerSubscriber` — логування рендеру
+  - `SummaryCollector` — підрахунок кількості елементів
+  - `PerformanceSubscriber` — підрахунок часу рендеру
 
-- Завершене завдання має містити робочий код без помилок компіляції/запуску.
-- Оформіть та надайте посилання на свій репозиторій згідно з інструкціями LMS.
+## Приклад запуску і виводу
+
+```bash
+npx ts-node src/main.ts markdown
+```
+
+```
+# Структурні патерни
+...
+[Log] Rendered Paragraph (36 chars)
+[Log] Rendered List (3 items)
+[Log] Rendered Section ("Composite", level 2)
+...
+[Summary] Rendered 2 sections, 3 paragraphs, 2 lists
+[Performance] Total render time: 12ms
+```
 
 ---
 
-Успіхів у вивченні патернів проектування! Якщо виникають питання — звертайтесь до ментора або обговорюйте у чаті курсу.
+# HW08 — Behavioural Pattern: Observer
 
----
+## Assignment description
 
-# Design Patterns Course — Homework
+Add a reactive layer to the document generator from the previous assignment (HW07) that tracks the rendering process of individual document elements. During generation, each element — `Paragraph`, `List`, `Section` — must notify subscribers when it finishes rendering. Reactions to these events are implemented through a subscription mechanism — the **Observer** pattern.
 
-This repository contains homework assignments for the "Design Patterns" course. Each folder or file is a starter implementation of a specific pattern or combination of patterns that students are expected to complete.
+- **`RenderEventPublisher`** — a static class that manages subscribers and dispatches render events.
+- **`RenderEventSubscriber`** — subscriber interface with an `update(context: RenderContext)` method.
+- **`RenderContext`** — event object containing element type, content, level, item count, and render time.
 
-## How to work with this repository
+## Subscribers
 
-- Each assignment provides starter code with stubs, hints, and a base structure.
-- Your task is to implement the missing logic following the principles of the relevant design pattern.
-- Read the TODO comments and hints in the files carefully — they indicate exactly what needs to be done.
-- Some assignments contain a minimal implementation that needs to be extended, verified, or optimised.
+- `RenderLoggerSubscriber` — logs each render event.
+- `SummaryCollector` — counts rendered elements by type.
+- `PerformanceSubscriber` — tracks total render time.
 
-## Structure
+## How to run
 
-- Each folder or file corresponds to a separate assignment or part of a larger task (e.g. the final project).
-- The final project has its own README with a detailed description of requirements, structure, and run instructions inside the `hw12_final` folder.
-
-## Recommendations
-
-- Follow SOLID principles and best practices for the chosen pattern.
-- Feel free to refactor the starter code if it helps better align with the pattern.
-- Explain your decisions in comments when the implementation is non-trivial.
-
-## How to submit
-
-- The completed assignment must contain working code with no compilation or runtime errors.
-- Format and provide a link to your repository according to the LMS instructions.
-
----
-
-Good luck learning design patterns! If you have questions — reach out to your mentor or discuss in the course chat.
+```bash
+npx ts-node src/main.ts markdown
+```
