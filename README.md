@@ -1,63 +1,136 @@
-# Домашні завдання до курсу "Design Patterns"
+# Домашнє завдання до Теми Структурні патерни: Адаптер та Фасад
 
-Цей репозиторій містить набір домашніх завдань для курсу "Design Patterns". Кожна папка або файл — це стартова реалізація певного патерну або їх комбінації, яку студент має довести до логічного завершення.
+### Опис завдання
 
-## Як працювати з цим репозиторієм
+Мета домашнього завдання — опанувати застосування структурних патернів у реальному контексті, а саме:
 
-- Для кожного завдання надано початковий код із заглушками, підказками та базовою структурою.
-- Ваше завдання — реалізувати відсутню логіку, дотримуючись принципів відповідного патерну проектування.
-- Уважно читайте TODO-коментарі та підказки у файлах — вони вказують, що саме потрібно доробити.
-- Деякі завдання містять мінімальну реалізацію, яку треба розширити, перевірити або оптимізувати.
+- Фасад (Facade) — для спрощення складного процесу аналізу і побудови звіту;
+- Адаптер (Adapter) — для уніфікації форматів виводу звіту.
 
-## Структура
+Наше домашнє завдання моделює ситуацію зі створення справжньої інструментальної утиліти, яка зустрічається у проектах з CLI-архітектурою.
 
-- Кожна папка або файл відповідає окремому завданню або частині великого завдання (наприклад, фінального проєкту).
-- Для фінального проєкту є окремий README з детальним описом вимог, структури та інструкцій по запуску у папці hw12_final.
+Реалізуйте консольну утиліту для аналізу файлової системи, яка:
 
-## Рекомендації
+- виконує повний аналіз обраної директорії;
+- генерує звіт про її вміст;
+- зберігає цей звіт у форматі `JSON`, `CSV` або `XML` залежно від обраного режиму;
+- демонструє поєднання двох структурних патернів: Адаптер і Фасад;
+- застосовує ієрархію фасадів: високорівневий фасад керує низькорівневим.
 
-- Дотримуйтесь принципів SOLID та best practices для обраного патерну.
-- Не бійтеся рефакторити стартовий код, якщо це потрібно для кращої відповідності патерну.
-- Пояснюйте свої рішення у коментарях, якщо реалізація нетривіальна.
+Архітектурні особливості застосунку наступні.
 
-## Як здавати
+- Застосунок має два ієрархічні фасади:
+  - `ReportManager` — високорівневий фасад, керує всім життєвим циклом;
+  - `AnalyzerFacade` — низькорівневий фасад, координує аналіз і форматування;
+- Патерн Адаптер дозволяє підключати нові формати без зміни вже написаної логіки застосунку;
+- Розділення обов’язків — кожен компонент відповідає лише за свою зону.
 
-- Завершене завдання має містити робочий код без помилок компіляції/запуску.
-- Оформіть та надайте посилання на свій репозиторій згідно з інструкціями LMS.
+### Патерни проектування
+
+#### 1. Патерн "Фасад"
+
+У проекті реалізовано два рівні фасадів:
+
+1. **AnalyzerFacade** (низькорівневий фасад):
+
+   - Приховує складність роботи з DirectoryAnalyzer
+   - Координує взаємодію між аналізатором та адаптером
+   - Надає простий метод generateReport()
+
+2. **ReportManager** (високорівневий фасад):
+   - Приховує роботу з AnalyzerFacade
+   - Керує вибором адаптерів
+   - Займається файловою системою
+   - Обробляє помилки
+   - Форматує імена файлів
+
+#### 2. Патерн "Адаптер"
+
+Реалізовано через інтерфейс ReportAdapter з трьома конкретними реалізаціями:
+
+- JsonReportAdapter
+- XmlReportAdapter
+- CsvReportAdapter
+
+### Структура файлів
+
+```
+├── DirectoryReport.ts    # Інтерфейс звіту
+├── DirectoryAnalyzer.ts  # Аналіз директорій
+├── ReportAdapter.ts      # Інтерфейс адаптера
+├── JsonReportAdapter.ts  # Адаптер для JSON
+├── XmlReportAdapter.ts   # Адаптер для XML
+├── CsvReportAdapter.ts   # Адаптер для CSV
+├── AnalyzerFacade.ts     # Низькорівневий фасад
+├── ReportManager.ts      # Високорівневий фасад
+└── main.ts              # Точка входу
+```
+
+## Встановлення та запуск
+
+1. Встановіть залежності:
+
+```bash
+npm install
+```
+
+2. Запустіть аналіз:
+
+```bash
+# Аналіз поточної директорії з виводом у JSON (за замовчуванням)
+npm start
+
+# Аналіз вказаної директорії
+npm start ./path/to/directory
+
+# Аналіз з вказаним форматом (json, xml, csv)
+npm start ./path/to/directory json
+npm start ./path/to/directory xml
+npm start ./path/to/directory csv
+```
+
+## Результати
+
+Звіти зберігаються в директорії `reports` з іменами виду:
+
+- `report-2024-02-20T12-34-56-789Z.json`
+- `report-2024-02-20T12-34-56-789Z.xml`
+- `report-2024-02-20T12-34-56-789Z.csv`
+
+Кожен звіт містить:
+
+- Кількість файлів
+- Кількість директорій
+- Загальний розмір файлів
+- Статистику по розширеннях файлів
 
 ---
 
-Успіхів у вивченні патернів проектування! Якщо виникають питання — звертайтесь до ментора або обговорюйте у чаті курсу.
+# HW05 — Structural Patterns: Adapter & Facade
 
----
+## Assignment description
 
-# Design Patterns Course — Homework
+The goal is to master structural patterns in a real-world context:
 
-This repository contains homework assignments for the "Design Patterns" course. Each folder or file is a starter implementation of a specific pattern or combination of patterns that students are expected to complete.
+- **Facade** — to simplify a complex analysis and report-building process.
+- **Adapter** — to unify report output formats.
 
-## How to work with this repository
+Implement a CLI utility for file system analysis that performs a full directory scan, generates a report, and saves it in `JSON`, `CSV`, or `XML` format using two hierarchical facades and the Adapter pattern.
 
-- Each assignment provides starter code with stubs, hints, and a base structure.
-- Your task is to implement the missing logic following the principles of the relevant design pattern.
-- Read the TODO comments and hints in the files carefully — they indicate exactly what needs to be done.
-- Some assignments contain a minimal implementation that needs to be extended, verified, or optimised.
+## Architecture
 
-## Structure
+- **`ReportManager`** — high-level facade managing the full lifecycle.
+- **`AnalyzerFacade`** — low-level facade coordinating analysis and formatting.
+- **Adapter** (`JsonReportAdapter`, `XmlReportAdapter`, `CsvReportAdapter`) — pluggable output formats without changing application logic.
 
-- Each folder or file corresponds to a separate assignment or part of a larger task (e.g. the final project).
-- The final project has its own README with a detailed description of requirements, structure, and run instructions inside the `hw12_final` folder.
+## How to run
 
-## Recommendations
+```bash
+npm install
+npm start                              # Analyse current directory, JSON output
+npm start ./path/to/directory json
+npm start ./path/to/directory xml
+npm start ./path/to/directory csv
+```
 
-- Follow SOLID principles and best practices for the chosen pattern.
-- Feel free to refactor the starter code if it helps better align with the pattern.
-- Explain your decisions in comments when the implementation is non-trivial.
-
-## How to submit
-
-- The completed assignment must contain working code with no compilation or runtime errors.
-- Format and provide a link to your repository according to the LMS instructions.
-
----
-
-Good luck learning design patterns! If you have questions — reach out to your mentor or discuss in the course chat.
+Reports are saved to the `reports/` directory with timestamped filenames.

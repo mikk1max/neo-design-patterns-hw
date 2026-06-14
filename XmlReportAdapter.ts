@@ -1,0 +1,21 @@
+import { ReportAdapter } from "./ReportAdapter";
+import { DirectoryReport } from "./DirectoryReport";
+
+export class XmlReportAdapter implements ReportAdapter {
+  export(report: DirectoryReport): string {
+    const extensions = Object.entries(report.extensions)
+      .map(([name, count]) => `    <extension name="${name}" count="${count}"/>`)
+      .join('\n');
+    return [
+      '<?xml version="1.0" encoding="UTF-8"?>',
+      '<report>',
+      `  <files>${report.files}</files>`,
+      `  <directories>${report.directories}</directories>`,
+      `  <totalSize>${report.totalSize}</totalSize>`,
+      '  <extensions>',
+      extensions,
+      '  </extensions>',
+      '</report>',
+    ].join('\n');
+  }
+}
