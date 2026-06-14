@@ -1,63 +1,124 @@
-# Домашні завдання до курсу "Design Patterns"
+# Домашка - Фінальний проєкт
 
-Цей репозиторій містить набір домашніх завдань для курсу "Design Patterns". Кожна папка або файл — це стартова реалізація певного патерну або їх комбінації, яку студент має довести до логічного завершення.
+# «Генератор резюме з JSON‑опису»
 
-## Як працювати з цим репозиторієм
+## Опис завдання
 
-- Для кожного завдання надано початковий код із заглушками, підказками та базовою структурою.
-- Ваше завдання — реалізувати відсутню логіку, дотримуючись принципів відповідного патерну проектування.
-- Уважно читайте TODO-коментарі та підказки у файлах — вони вказують, що саме потрібно доробити.
-- Деякі завдання містять мінімальну реалізацію, яку треба розширити, перевірити або оптимізувати.
+У цьому фінальному домашньому завданні необхідно реалізувати генератор резюме, який демонструє застосування п'яти патернів проектування: Facade, Template Method, Factory Method, Composite, Decorator.
 
-## Структура
+Завдання має на меті навчити вас:
 
-- Кожна папка або файл відповідає окремому завданню або частині великого завдання (наприклад, фінального проєкту).
-- Для фінального проєкту є окремий README з детальним описом вимог, структури та інструкцій по запуску у папці hw12_final.
+- Правильно застосовувати патерни проектування в практичних сценаріях
+- Створювати модульну, розширювану архітектуру
+- Структурувати код з використанням патернів
 
-## Рекомендації
+Необхідно сформувати самодостатню HTML‑сторінку‑резюме, яка будується з єдиного джерела даних — файл `resume.json`. Усі стилі фіксовані у `styles.css`, сторонніх бібліотек або фреймворків не використовуємо. Після компіляції `main.ts` і відкриття `index.html` сторінка повинна безпомилково відобразити повне резюме, а проєкти з прапорцем `"isRecent": true` — підсвітити червоним.
 
-- Дотримуйтесь принципів SOLID та best practices для обраного патерну.
-- Не бійтеся рефакторити стартовий код, якщо це потрібно для кращої відповідності патерну.
-- Пояснюйте свої рішення у коментарях, якщо реалізація нетривіальна.
+## Структура проекту
 
-## Як здавати
+```
+/
+├── index.html                  # Статичний макет сторінки
+├── resume.json                 # Джерело даних для сторінки
+├── vite.config.js              # Конфігурація Vite
+├── tsconfig.json               # Конфігурація TypeScript
+├── dist/                       # Директорія для збірки
+└── src/
+    ├── styles.css              # Базові стилі + .highlight
+    ├── facade/
+    │   └── ResumePage.ts       # Фасад проєкту
+    ├── importer/
+    │   ├── AbstractImporter.ts # Базовий Template Method
+    │   └── ResumeImporter.ts   # Конкретна реалізація
+    ├── blocks/                 # Конкретні блоки резюме
+    │   ├── BlockFactory.ts     # Factory Method
+    │   ├── HeaderBlock.ts
+    │   ├── SummaryBlock.ts
+    │   ├── ExperienceBlock.ts  # Composite‑контейнер
+    │   ├── ProjectBlock.ts
+    │   ├── EducationBlock.ts
+    │   └── SkillsBlock.ts
+    ├── decorators/
+    │   └── HighlightDecorator.ts
+    ├── models/
+    │   └── ResumeModel.ts      # Типи внутрішньої моделі
+    └── main.ts                 # Точка входу
+```
 
-- Завершене завдання має містити робочий код без помилок компіляції/запуску.
-- Оформіть та надайте посилання на свій репозиторій згідно з інструкціями LMS.
+## Запуск проекту
+
+1. Встановлення залежностей:
+
+   ```bash
+   npm install
+   ```
+
+2. Режим розробки:
+
+   ```bash
+   npm run dev
+   ```
+
+3. Збірка для продакшену:
+
+   ```bash
+   npm run build
+   ```
+
+4. Попередній перегляд збірки:
+   ```bash
+   npm run preview
+   ```
+
+## Технології
+
+- TypeScript
+- Vite (збірка та розробка)
+- Патерни проектування
+- JSON для зберігання даних
+- CSS для стилізації
 
 ---
 
-Успіхів у вивченні патернів проектування! Якщо виникають питання — звертайтесь до ментора або обговорюйте у чаті курсу.
+# HW12 Final — Resume Generator from JSON Description
 
----
+## Assignment description
 
-# Design Patterns Course — Homework
+Implement a resume generator that demonstrates the application of five design patterns: **Facade, Template Method, Factory Method, Composite, Decorator**.
 
-This repository contains homework assignments for the "Design Patterns" course. Each folder or file is a starter implementation of a specific pattern or combination of patterns that students are expected to complete.
+The application generates a self-contained HTML resume page built from a single data source — `resume.json`. All styles are fixed in `styles.css`; no external libraries or frameworks are used. After compiling `main.ts` and opening `index.html`, the page must display the complete resume without errors, and projects with `"isRecent": true` must be highlighted in red.
 
-## How to work with this repository
+## Project structure
 
-- Each assignment provides starter code with stubs, hints, and a base structure.
-- Your task is to implement the missing logic following the principles of the relevant design pattern.
-- Read the TODO comments and hints in the files carefully — they indicate exactly what needs to be done.
-- Some assignments contain a minimal implementation that needs to be extended, verified, or optimised.
+```
+/
+├── index.html          # Static page layout
+├── resume.json         # Data source
+├── vite.config.js
+├── tsconfig.json
+└── src/
+    ├── styles.css
+    ├── facade/         # ResumePage — project facade
+    ├── importer/       # AbstractImporter (Template Method), ResumeImporter
+    ├── blocks/         # Block classes + BlockFactory (Factory Method), ExperienceBlock (Composite)
+    ├── decorators/     # HighlightDecorator
+    ├── models/         # ResumeModel types
+    └── main.ts
+```
 
-## Structure
+## How to run
 
-- Each folder or file corresponds to a separate assignment or part of a larger task (e.g. the final project).
-- The final project has its own README with a detailed description of requirements, structure, and run instructions inside the `hw12_final` folder.
+```bash
+npm install
+npm run dev      # Development mode
+npm run build    # Production build
+npm run preview  # Preview the build
+```
 
-## Recommendations
+## Technologies
 
-- Follow SOLID principles and best practices for the chosen pattern.
-- Feel free to refactor the starter code if it helps better align with the pattern.
-- Explain your decisions in comments when the implementation is non-trivial.
-
-## How to submit
-
-- The completed assignment must contain working code with no compilation or runtime errors.
-- Format and provide a link to your repository according to the LMS instructions.
-
----
-
-Good luck learning design patterns! If you have questions — reach out to your mentor or discuss in the course chat.
+- TypeScript
+- Vite (build & development)
+- Design patterns: Facade, Template Method, Factory Method, Composite, Decorator
+- JSON for data storage
+- CSS for styling
